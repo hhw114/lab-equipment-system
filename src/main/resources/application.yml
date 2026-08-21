@@ -1,0 +1,23 @@
+
+spring:
+  application:
+    name: lab-equipment-system
+  datasource:
+    url: jdbc:mysql://localhost:3306/laboratory_equipment?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456  # ?????????
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# MyBatis-Plus ??????
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true  # ????????
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # ?? SQL ??
+  global-config:
+    db-config:
+      id-type: auto  # ????
+
+
+jwt:
+  secret: spdjfkdjowo39284jeks  # 密钥，建议使用复杂字符串
+  expire: 7200000                 # 过期时间，单位毫秒（2小时）
