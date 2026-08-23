@@ -2,6 +2,7 @@ package com.hhw.controller;
 
 
 import com.hhw.domain.dto.LoginFormDTO;
+import com.hhw.domain.dto.RegisterFormDTO;
 import com.hhw.domain.result.Result;
 import com.hhw.service.IUserService;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,15 @@ public class UserController {
     @PostMapping("/login")
     public Result login(@RequestBody LoginFormDTO loginFormDTO) {
         return userService.login(loginFormDTO);
+    }
+
+
+    /*
+    * 用户注册接口
+    *
+    * */
+    @PostMapping("/register")
+    public Result register(@RequestBody RegisterFormDTO registerFormDTO){
+        return userService.register(registerFormDTO);
     }
 }

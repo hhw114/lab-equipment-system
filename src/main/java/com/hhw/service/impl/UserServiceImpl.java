@@ -3,6 +3,7 @@ package com.hhw.service.impl;
 import cn.hutool.jwt.JWT;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.hhw.domain.dto.LoginFormDTO;
+import com.hhw.domain.dto.RegisterFormDTO;
 import com.hhw.domain.po.User;
 import com.hhw.domain.result.Result;
 import com.hhw.exception.BizException;
@@ -66,6 +67,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         data.put("user", user);
 
         return Result.ok(data);
+    }
+    /*
+    * 注册接口
+    *
+    * */
+    @Override
+    public Result register(RegisterFormDTO registerFormDTO) {
+        //1.获取基本信息
+        String username = registerFormDTO.getUsername();
+        String password = registerFormDTO.getPassword();
+        //2.判断数据是否为空
+        if(username==null || password==null){
+            throw new BizException("用户名或密码为空!");
+        }
+        //3.根据用户名查询对应的密码
+        User user = lambdaQuery().eq(User::getUsername, username)
+                .one();
+        if (user != null) {
+            //用户已经存在,报错
+            throw new BizException("注册失败，用户名已存在");
+        }
+        //4.不存在，创建用户
+        user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setPhone(registerFormDTO.getPhone());
+        user.setRealName(registerFormDTO.getRealName());
+        user.setRole(registerFormDTO.getRole());
+        //5.插入表
+        boolean success = save(user);
+        if (!success) {
+            throw new BizException("数据库插入新用户失败");
+        }
+        return Result.ok();
     }
 
 
