@@ -4,6 +4,7 @@ import cn.hutool.jwt.JWT;
 import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import com.hhw.domain.dto.LoginFormDTO;
 import com.hhw.domain.dto.RegisterFormDTO;
+import com.hhw.domain.dto.UpdateUserDTO;
 import com.hhw.domain.po.User;
 import com.hhw.domain.result.Result;
 import com.hhw.exception.BizException;
@@ -12,9 +13,12 @@ import com.hhw.service.IUserService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,6 +103,70 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         boolean success = save(user);
         if (!success) {
             throw new BizException("数据库插入新用户失败");
+        }
+        return Result.ok();
+    }
+    /*
+    * 根据id查询用户信息
+    *
+    * */
+    @Override
+    public Result getUserById(Long id) {
+        User user = getById(id);
+        return Result.ok(user);
+
+    }
+
+    /*
+    * 获取全部用户信息
+    *
+    * */
+    @Override
+    public Result getUserList() {
+        List<User> list = list();
+        return Result.ok(list);
+    }
+
+    @Override
+    @Transactional
+    public Result updateUser(UpdateUserDTO dto) {
+        // 1. 先查出原有数据（不存在则直接抛异常）
+        User existingUser = getById(dto.getId());
+        if (existingUser == null) {
+            throw new BizException("用户不存在");
+        }
+
+        // 2. 只更新传入的非空字段（利用 MapStruct 或手动 set）
+        if (dto.getUsername() != null) {
+            existingUser.setUsername(dto.getUsername());
+        }
+        if (dto.getPhone() != null) {
+            existingUser.setPhone(dto.getPhone());
+        }
+        if (dto.getRealName() != null) {
+            existingUser.setRealName(dto.getRealName());
+        }
+        if (dto.getRole() != null) {
+            existingUser.setRole(dto.getRole());
+        }
+        existingUser.setUpdateTime(LocalDateTime.now());
+
+        // 3. 执行更新
+        boolean success = updateById(existingUser);
+        if (!success) {
+            throw new BizException("更新用户数据失败");
+        }
+        return Result.ok();
+    }
+    /*
+    * 删除用户
+    *
+    * */
+    @Override
+    public Result deleteUser(Long id) {
+        boolean success = removeById(id);
+        if (!success) {
+            throw new BizException("删除用户失败，用户不存在");
         }
         return Result.ok();
     }

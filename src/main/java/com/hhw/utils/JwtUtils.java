@@ -5,6 +5,8 @@ import cn.hutool.jwt.JWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class JwtUtils {
 
@@ -56,6 +58,9 @@ public class JwtUtils {
             token = token.substring(7);
         }
         JWT jwt = JWTUtil.parseToken(token);
-        return Long.parseLong(jwt.getPayload("exp").toString()) < System.currentTimeMillis();
+        // 都转成秒级比较
+        Long expSeconds = Long.parseLong(jwt.getPayload("exp").toString());
+        Long nowSeconds = System.currentTimeMillis() / 1000;
+        return expSeconds < nowSeconds;
     }
 }
