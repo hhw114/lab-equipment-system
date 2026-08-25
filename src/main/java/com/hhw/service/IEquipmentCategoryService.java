@@ -1,7 +1,9 @@
 package com.hhw.service;
 
 import com.baomidou.mybatisplus.spring.service.IService;
+import com.hhw.domain.dto.EquipmentCategoryDTO;
 import com.hhw.domain.po.EquipmentCategory;
+import com.hhw.domain.result.Result;
 
 
 /**
@@ -14,4 +16,13 @@ import com.hhw.domain.po.EquipmentCategory;
  */
 public interface IEquipmentCategoryService extends IService<EquipmentCategory> {
 
+    Result getCategoryInfo(Long id);
+
+    Result getAllCategoryInfo();
+
+    Result addCategory(EquipmentCategoryDTO equipmentCategoryDTO);
+
+    Result updateCategory(EquipmentCategoryDTO equipmentCategoryDTO);
+
+    Result deleteCategory(Long id);
 }
