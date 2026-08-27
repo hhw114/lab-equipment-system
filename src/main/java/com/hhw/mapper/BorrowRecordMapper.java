@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BorrowRecordMapper extends BaseMapper<BorrowRecord> {
 
+    BorrowRecord selectBorrowedRecordByEquipmentId(Long equipmentId);
 }

@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hhw.mapper.BorrowRecordMapper">
 
+    <select id="selectBorrowedRecordByEquipmentId"
+            resultType="com.hhw.domain.po.BorrowRecord">
+        SELECT *
+        FROM borrow_record
+        WHERE equipment_id = #{equipmentId}
+          AND status = 'BORROWED'
+        LIMIT 1
+    </select>
 </mapper>

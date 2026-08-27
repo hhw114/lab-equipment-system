@@ -1,7 +1,10 @@
 package com.hhw.service;
 
 import com.baomidou.mybatisplus.spring.service.IService;
+import com.hhw.domain.dto.BorrowRecordDTO;
 import com.hhw.domain.po.BorrowRecord;
+
+import java.util.List;
 
 
 /**
@@ -14,4 +17,15 @@ import com.hhw.domain.po.BorrowRecord;
  */
 public interface IBorrowRecordService extends IService<BorrowRecord> {
 
+    List<BorrowRecord> queryBorrowRecords();
+
+    BorrowRecord queryBorrowRecordById(Long id);
+
+    void addBorrowRecord(BorrowRecordDTO dto);
+
+    void approveBorrow(Long id);
+
+    void rejectBorrow(Long id);
+
+    void returnEquipment(Long id);
 }
