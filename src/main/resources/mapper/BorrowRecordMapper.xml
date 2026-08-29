@@ -10,4 +10,18 @@
           AND status = 'BORROWED'
         LIMIT 1
     </select>
+
+    <select id="selectDailyTrend" resultType="com.hhw.domain.vo.DailyBorrowStat">
+        SELECT
+        DATE(borrow_time) AS date,
+        COUNT(*) AS count
+        FROM borrow_record
+        WHERE borrow_time BETWEEN #{startTime} AND #{endTime}
+        AND status IN
+        <foreach collection="statusList" item="status" open="(" separator="," close=")">
+            #{status}
+        </foreach>
+        GROUP BY DATE(borrow_time)
+        ORDER BY date ASC
+    </select>
 </mapper>

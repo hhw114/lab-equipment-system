@@ -2,6 +2,11 @@ package com.hhw.mapper;
 
 import com.hhw.domain.po.BorrowRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hhw.domain.vo.DailyBorrowStat;
+import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +19,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface BorrowRecordMapper extends BaseMapper<BorrowRecord> {
 
     BorrowRecord selectBorrowedRecordByEquipmentId(Long equipmentId);
+
+    /**
+     * 按天统计借阅量
+     */
+    List<DailyBorrowStat> selectDailyTrend(
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime,
+            @Param("statusList") List<String> statusList
+    );
 }
